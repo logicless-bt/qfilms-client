@@ -1,14 +1,11 @@
 //imports and bundling
-import {createRoot} from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
+import { MainView } from "./components/main-view/main-view";
 import "./index.scss";
 
 //main component
 const MyFlixApplication = () => {
-    return (
-        <div className = "myflix">
-            <div>Good morning</div>
-        </div>
-    );
+    return <MainView />
 };
 
 //finds root
