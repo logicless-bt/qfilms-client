@@ -1,64 +1,53 @@
 import React from "react";
 import { useState } from "react";
-import { BookCard } from "../book-card/book-card";
-import { BookView } from "../book-view/book-view";
+import { MovieCard } from "../movie-card/movie-card";
+import { MovieView } from "../movie-view/movie-view";
 
 export const MainView = () => {
-    const [books, setBooks] = useState([
+    const [movies, setMovies] = useState([
         {
           id: 1,
-          title: "Eloquent JavaScript",
+          title: "All of Us Strangers",
           image:
-            "https://images-na.ssl-images-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg",
-          author: "Marijn Haverbeke"
+            "https://www.google.com/imgres?q=all%20of%20us%20strangers&imgurl=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FM%2FMV5BZDU2ZjBlOTUtMTIzMC00OWI0LTg2OTAtZmUxYTE2MzdhNzZlXkEyXkFqcGc%40._V1_FMjpg_UX1000_.jpg&imgrefurl=https%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt21192142%2F&docid=yJ1k78DrZ1sKwM&tbnid=LxLcnMs8IXsYyM&vet=12ahUKEwjYj_ap5oyKAxUVKlkFHaMKNJIQM3oECAQQAA..i&w=1000&h=1499&hcb=2&ved=2ahUKEwjYj_ap5oyKAxUVKlkFHaMKNJIQM3oECAQQAA",
+          director: "Andrew Haigh",
+          genre: "Fantasy"
         },
         {
           id: 2,
-          title: "Mastering JavaScript Functional Programming",
+          title: "Carol",
           image:
-            "https://images-na.ssl-images-amazon.com/images/I/51WAikRq37L._SX218_BO1,204,203,200_QL40_FMwebp_.jpg",
-          author: "Federico Kereki"
+            "https://www.google.com/imgres?q=carol%20movie&imgurl=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FM%2FMV5BMTczNTQ4OTEyNV5BMl5BanBnXkFtZTgwNDgyMDI3NjE%40._V1_.jpg&imgrefurl=https%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt2402927%2F&docid=XLx6CIs_TjDiuM&tbnid=XDc_MO4NCmKGaM&vet=12ahUKEwjvk_vC5oyKAxWPEFkFHQ-xD_QQM3oECBsQAA..i&w=1382&h=2048&hcb=2&ved=2ahUKEwjvk_vC5oyKAxWPEFkFHQ-xD_QQM3oECBsQAA",
+          director: "Todd Haynes",
+          genre: "Historical"
         },
         {
           id: 3,
-          title: "JavaScript: The Good Parts",
+          title: "Moonlight",
           image:
-            "https://images-na.ssl-images-amazon.com/images/I/5131OWtQRaL._SX381_BO1,204,203,200_.jpg",
-          author: "Douglas Crockford"
-        },
-        {
-          id: 4,
-          title: "JavaScript: The Definitive Guide",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/51HbNW6RzhL._SX218_BO1,204,203,200_QL40_FMwebp_.jpg",
-          author: "David Flanagan"
-        },
-        {
-          id: 5,
-          title: "The Road to React",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/41MBLi5a4jL._SX384_BO1,204,203,200_.jpg",
-          author: "Robin Wieruch"
+            "https://www.google.com/imgres?q=moonlight%20movie&imgurl=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FM%2FMV5BNzQxNTIyODAxMV5BMl5BanBnXkFtZTgwNzQyMDA3OTE%40._V1_.jpg&imgrefurl=https%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt4975722%2F&docid=A4iaOtzGJHtgDM&tbnid=uvrsmC8spq3e4M&vet=12ahUKEwiz8aji5oyKAxXtF1kFHS_jJSYQM3oECB0QAA..i&w=2764&h=4096&hcb=2&ved=2ahUKEwiz8aji5oyKAxXtF1kFHS_jJSYQM3oECB0QAA",
+          director: "Barry Jenkins",
+          genre: "Drama"
         }
       ]);
 
-    const [selectedBook, setSelectedBook] = useState(null);
-    if(selectedBook){
+    const [selectedMovie, setSelectedMovie] = useState(null);
+    if(selectedMovie){
         return (
-        <BookView book={selectedBook} onBackClick={() => setSelectedBook(null)} />
+        <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />
         );
     }
 
-    if (books.length == 0) {
+    if (movies.length == 0) {
         return <div>The list is empty.</div>;
     }
 
     return (
         <div>
-            {books.map((book) => (
-                <BookCard key={book.id} book={book} 
-                onBookClick={(newSelectedBook) => {
-                    setSelectedBook(newSelectedBook);
+            {movies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} 
+                onMovieClick={(newSelectedMovie) => {
+                    setSelectedMovie(newSelectedMovie);
                 }}
                 />
             ))}
