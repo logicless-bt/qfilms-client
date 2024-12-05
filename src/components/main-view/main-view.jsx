@@ -13,7 +13,7 @@ export const MainView = () => {
           return {
             id: doc.key,
             title: doc.title,
-            director: director.author_name?.[0],
+            director: doc.director_name?.[0],
             genre: doc.genre
           };
         });
