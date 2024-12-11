@@ -9,14 +9,15 @@ export const MainView = () => {
       fetch("https://qfilms-e3cad25d1fad.herokuapp.com/movies")
       .then((response) => response.json())
       .then((data) => {
-        const moviesFromApi = data.docs.map((doc) => {
+        const moviesFromApi = data;
+        /*const moviesFromApi = data.docs.map((doc) => {
           return {
             id: doc.key,
             title: doc.title,
             director: doc.director_name?.[0],
             genre: doc.genre
           };
-        });
+        });*/
 
         setMovies(moviesFromApi);
       });
