@@ -27375,16 +27375,20 @@ const MainView = ()=>{
     (0, _react.useEffect)(()=>{
         fetch("https://qfilms-e3cad25d1fad.herokuapp.com/movies").then((response)=>response.json()).then((data)=>{
             console.log(data);
-            const moviesFromApi = data;
-            /*const moviesFromApi = data.docs.map((doc) => {
+            const variable = data;
+            console.log("this is" + variable);
+            console.log(data[0]);
+        /*const moviesFromApi = data.docs.map((doc) => {
           return {
             id: doc.key,
             title: doc.title,
             director: doc.director_name?.[0],
             genre: doc.genre
           };
-        });*/ setMovies(moviesFromApi);
         });
+        
+
+        setMovies(moviesFromApi);*/ });
     }, []);
     const [selectedMovie, setSelectedMovie] = (0, _react.useState)(null);
     if (selectedMovie) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieView.MovieView), {
@@ -27392,14 +27396,14 @@ const MainView = ()=>{
         onBackClick: ()=>setSelectedMovie(null)
     }, void 0, false, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 30,
+        lineNumber: 33,
         columnNumber: 9
     }, undefined);
     if (movies.length == 0) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: "The list is empty."
     }, void 0, false, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 35,
+        lineNumber: 38,
         columnNumber: 16
     }, undefined);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -27410,12 +27414,12 @@ const MainView = ()=>{
                 }
             }, movie.id, false, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 41,
+                lineNumber: 44,
                 columnNumber: 17
             }, undefined))
     }, void 0, false, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 39,
+        lineNumber: 42,
         columnNumber: 9
     }, undefined);
 };
