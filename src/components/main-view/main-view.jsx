@@ -5,44 +5,22 @@ import { MovieView } from "../movie-view/movie-view";
 
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
-    /*useEffect(() => {
+    useEffect(() => {
       fetch("https://qfilms-e3cad25d1fad.herokuapp.com/movies")
       .then((response) => response.json())
       .then((data) => {
-        const moviesFromApi = data.docs.map((doc) => {
+        const moviesFromApi = data.map((movie) => {
           return {
-            id: doc.key,
-            title: doc.title,
-            director: doc.director_name?.[0],
-            genre: doc.genre
+            id: movie._id,
+            title: movie.Title,
+            director: movie.Director.Name,
+            genre: movie.Genre.Name
           };
         });
         
 
         setMovies(moviesFromApi);
       });
-    }, []);*/
-
-    useEffect(() => {
-      const fetchMovies = async () => {
-        try {
-          const response = await fetch("https://qfilms-e3cad25d1fad.herokuapp.com/movies");
-          const data = await response.json();
-          
-          const moviesFromApi = data.docs.map((doc) => ({
-            id: doc.key,
-            title: doc.title,
-            director: doc.director_name?.[0],
-            genre: doc.genre
-          }));
-          
-          setMovies(moviesFromApi);
-        } catch (error) {
-          console.error("Error fetching movies:", error);
-        }
-      };
-  
-      fetchMovies();
     }, []);
 
     const [selectedMovie, setSelectedMovie] = useState(null);
