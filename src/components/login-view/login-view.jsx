@@ -41,7 +41,7 @@ export const LoginView = ({ onLoggedIn }) => {
                 value = {username}
                 onChange={(e)=> setUsername(e.target.value)} 
                 required
-                minlength="3"/>
+                minLength="3"/>
             </label>
             <label>
                 Password:
@@ -49,7 +49,7 @@ export const LoginView = ({ onLoggedIn }) => {
                 value = {password}
                 onChange={(e)=> setPassword(e.target.value)}
                 required
-                minlength="3"/>
+                minLength="3"/>
             </label>
             <button type="submit">Submit</button>
         </form>

@@ -28476,7 +28476,7 @@ const LoginView = ({ onLoggedIn })=>{
                         value: username,
                         onChange: (e)=>setUsername(e.target.value),
                         required: true,
-                        minlength: "3"
+                        minLength: "3"
                     }, void 0, false, {
                         fileName: "src/components/login-view/login-view.jsx",
                         lineNumber: 40,
@@ -28496,7 +28496,7 @@ const LoginView = ({ onLoggedIn })=>{
                         value: password,
                         onChange: (e)=>setPassword(e.target.value),
                         required: true,
-                        minlength: "3"
+                        minLength: "3"
                     }, void 0, false, {
                         fileName: "src/components/login-view/login-view.jsx",
                         lineNumber: 48,
@@ -28560,7 +28560,7 @@ const SignupView = ()=>{
             Email: email,
             Birthday: birthday
         };
-        fetch(URL, {
+        fetch("https://qfilms-e3cad25d1fad.herokuapp.com/users", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
