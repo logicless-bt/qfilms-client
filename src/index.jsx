@@ -1,7 +1,7 @@
 //imports and bundling
 import { createRoot } from 'react-dom/client';
 import { MainView } from "./components/main-view/main-view";
-import "bootstrap/dist/css/boostrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.scss";
 
 //main component
