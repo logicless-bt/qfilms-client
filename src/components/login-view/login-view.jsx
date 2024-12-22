@@ -14,15 +14,15 @@ export const LoginView = ({ onLoggedIn }) => {
             secret: password
         };
 
-        fetch(("https://openlibrary.org/account/login.json"), {
+        fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/login"), {
             method: "POST",
+            body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+            }
         }).then((response) => response.json())
         .then((data) => {
-            console.log("Login response: ", data);
+            console.log("Login response: " + data);
             if(data.user) {
                 localStorage.setItem("user", JSON.stringify(data.user));
                 localStorage.setItem("token", data.token);
@@ -32,6 +32,7 @@ export const LoginView = ({ onLoggedIn }) => {
             }
         })
     .catch((e) => {
+        console.error("Error during signin" + e)
         alert("Something went wrong");
     });
     };
