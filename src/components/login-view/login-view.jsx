@@ -10,8 +10,8 @@ export const LoginView = ({ onLoggedIn }) => {
         event.preventDefault();
 
         const data = {
-            access: username,
-            secret: password
+            Username: username,
+            Password: password
         };
 
         fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/login"), {

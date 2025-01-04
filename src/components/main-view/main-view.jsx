@@ -33,10 +33,10 @@ export const MainView = () => {
           };
         });
         
-console.log(movies)
-        setMovies(moviesFromApi);
-      });
-    }, [token]);
+  console.log(movies)
+          setMovies(moviesFromApi);
+        });
+      }, [token]);
 
     if(!user){
       return (
