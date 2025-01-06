@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 
 //import "./movie-card.scss";
 
-export const MovieCard = ({ movie, onMovieClick }) => {
+export const MovieCard = ({ movie }) => {
     return (
         <Card className="h-100">
             <Card.Img variant = "top" src="movie.img" />
@@ -13,13 +13,10 @@ export const MovieCard = ({ movie, onMovieClick }) => {
                 <Card.Title>{movie.Title}</Card.Title>
                 <Card.Text>{movie.Director}</Card.Text>
                 <Card.Text>{movie.Genre}</Card.Text>
-                <Link to={`/movies/${encodeURIcomponent(movie.id)}`}>
+                <Link to={`/movies/${movie.id}`}>
                     <Button variant="link">Open</Button>
                 </Link>
             </Card.Body>
-            <Button onClick={()=> {
-                onMovieClick(movie);
-            }} variant="link">Open</Button>
         </Card>
 
         /*<div
