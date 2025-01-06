@@ -41,16 +41,89 @@ export const MainView = () => {
 
     if(!user){
       return (
-          <Col md={5} className="justify-content-md-center mb-5">
-            <LoginView onLoggedIn={(user, token)=> {
-              setUser(user);
-              setToken(token);
-            }} 
-            />
-            or
-            <SignupView />
-          </Col>
-        
+        <BrowserRouter>
+          <Row className="justify-content-md-center">
+            <Routes>
+              {/*signup */}
+              <Route
+              path="/signup"
+              element={
+                <>
+                  {user ? (
+                    <Navigate to="/" />
+                  ) : (
+                    <Col md={5}>
+                      <SignupView />
+                    </Col>
+                  )}
+                </>
+              } />
+
+              {/*login */}
+              <Route
+              path = "/login"
+              element={
+                <>
+                  {user ? ( 
+                    <Navigate to= "/login" />
+                  ) : (
+                    <Col md={5}>
+                      <LoginView onLoggedIn={(user) => setUser(user)} />
+                    </Col>
+                  )}
+                </>
+              }
+              />
+
+              {/*movieId */}
+              <Route
+              path="/movies/:movieId"
+              element ={
+                <>
+                  {!user ? (
+                    <Navigate to="/login" replace />
+                  ) : movies.length ===0 ? (
+                    <Col>The movies list is empty...</Col>
+                  ) : (
+                    <Col md="8">
+                      <MovieView movies={movies} />
+                    </Col>
+                  )}
+                </>
+              }
+              />
+
+              {/* just / */}
+              <Route
+              path="/"
+              element ={
+                <>
+                  {!user ? (
+                    <Navigate to="/login" replace />
+                  ) : movies.length ===0 ? (
+                    <Col>The movies list is empty...</Col>
+                  ) : (
+                    movies.map((book) => (
+                      <Col className="mb-4" key={movie.id} md={3}>
+                        <MovieCard movie={movie} />
+                      </Col>
+                    )))}
+                </>
+              }
+              />
+
+              {/*<Col md={5} className="justify-content-md-center mb-5">
+                <LoginView onLoggedIn={(user, token)=> {
+                  setUser(user);
+                  setToken(token);
+                }} 
+                />
+                or
+                <SignupView />
+              </Col>*/}
+            </Routes>
+          </Row>
+        </BrowserRouter>
     );
     }
 
