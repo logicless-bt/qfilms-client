@@ -17,15 +17,22 @@ export const MovieCard = ({ movie }) => {
                     <Button variant="link">Open</Button>
                 </Link>
             </Card.Body>
+            <Button
+           // variant = {isFavorite ? "dark" : "light"}
+            className = "btn-heart"
+            >
+                {/*{isFavorite ? (
+                    <>
+                        <i className="heart-fill"></i>
+                    </>
+                ) : (
+                    <>
+                        <i className="heart"></i>
+                    </>
+                )}*/}
+            </Button>
         </Card>
 
-        /*<div
-        onClick={() => {
-            onMovieClick(movie);
-        }}
-        >
-        {movie.title}
-        </div>*/
     );
 };
 
@@ -35,6 +42,5 @@ MovieCard.propTypes = {
         title: PropTypes.string.isRequired,
         director: PropTypes.string,
         genre: PropTypes.string
-    }).isRequired,
-    onMovieClick: PropTypes.func.isRequired
+    }).isRequired
 };

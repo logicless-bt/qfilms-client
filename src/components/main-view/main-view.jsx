@@ -7,6 +7,7 @@ import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
+import { ProfileView } from "../profile-view/profile-view";
 
 export const MainView = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -25,7 +26,6 @@ export const MainView = () => {
       })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const moviesFromApi = data.map((movie) => {
           return {
             id: movie._id.toString(),
@@ -35,10 +35,11 @@ export const MainView = () => {
           };
         });
         
-  console.log(movies)
           setMovies(moviesFromApi);
         });
       }, [token]);
+
+      
 
       const handleLogout = () => {
         setUser = (null);
@@ -54,7 +55,7 @@ export const MainView = () => {
 
     return (
       <BrowserRouter>
-      <NavigationBar user={user} onLoggedOut={handleLogout} />
+      <NavigationBar user={user} handleLogout={handleLogout} />
       <Row className="justify-content-md-center">
         <Routes>
           {/*signup */}
@@ -121,6 +122,21 @@ export const MainView = () => {
                     <MovieCard movie={movie} />
                   </Col>
                 )))}
+            </>
+          }
+          />
+
+          <Route
+          path="/profile"
+          element = {
+            <>
+              {!user ? (
+                <Navigate to ="/login" replace />
+              ) : (
+                <Col md={8}>
+                  <ProfileView user={user} movies={movies}/>
+                </Col>
+              )}
             </>
           }
           />

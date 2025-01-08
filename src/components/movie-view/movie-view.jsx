@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 //import "./movie-view.scss"
 
-export const MovieView = ({ movies, onBackClick }) => {
+export const MovieView = ({ movies }) => {
     const { movieId } = useParams();
     const movie = movies.find((m) => m.id === movieId);
 
