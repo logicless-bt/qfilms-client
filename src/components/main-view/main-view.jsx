@@ -13,31 +13,56 @@ export const MainView = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const storedToken = localStorage.getItem("token");
     const [movies, setMovies] = useState([]);
-    //const [selectedMovie, setSelectedMovie] = useState(null);
     const [user, setUser] = useState(storedUser? storedUser: null);
     const [token, setToken] = useState(storedToken? storedToken: null);
+    const [favMovies, setFavMovies] = useState(null);
+
+    const handleProfileUpdate = (newUser) => {
+      setUser(newUser);
+      localStorage.setItem("user", JSON.stringify(newUser));
+    };
+
     useEffect(() => {
-      if(!token) {
+      if(!token || !user) {
         return;
       }
 
-      fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        const moviesFromApi = data.map((movie) => {
-          return {
-            id: movie._id.toString(),
-            title: movie.Title,
-            director: movie.Director.Name,
-            genre: movie.Genre.Name
-          };
-        });
-        
-          setMovies(moviesFromApi);
-        });
-      }, [token]);
+      const getData = async () => {
+        //get movies first
+        fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          const moviesFromApi = data.map((movie) => {
+            return {
+              id: movie._id.toString(),
+              title: movie.Title,
+              director: movie.Director.Name,
+              genre: movie.Genre.Name
+            };
+          });
+          
+            setMovies(moviesFromApi);
+          });
+
+          //get favorites second
+          const favResponse = await fetch(`https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}`, {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json"
+            },
+          });
+
+          const favData = await favResponse.json();
+          const favList = Array.isArray(favData.FavoriteMovies)
+          ? favData.FavoriteMovies 
+          : [];
+          setFavMovies(favList);
+
+        };
+        getData();
+      }, [token, user]);
 
       
 
@@ -134,7 +159,13 @@ export const MainView = () => {
                 <Navigate to ="/login" replace />
               ) : (
                 <Col md={8}>
-                  <ProfileView user={user} movies={movies}/>
+                  <ProfileView 
+                  user={user} 
+                  movies={movies} 
+                  token={token} 
+                  favMovies = {favMovies} 
+                  onProfileUpdate = {handleProfileUpdate}
+                  onLogout = {handleLogout}/>
                 </Col>
               )}
             </>
