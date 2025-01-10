@@ -29,7 +29,7 @@ export const MainView = () => {
 
       const getData = async () => {
         //get movies first
-        fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
+        {/*fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
           headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => response.json())
@@ -44,7 +44,23 @@ export const MainView = () => {
           });
           
             setMovies(moviesFromApi);
+          });*/}
+
+          //get movies first
+          const getMovies = await fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
+            headers: { 
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application.json"
+            },
           });
+
+          const moviesData = await getMovies.json();
+          const moviesFromApi = moviesData.map((movie) => ({
+            id: movie._id.toString(),
+            title: movie.Title,
+            director: movie.Director.Name,
+            genre: movie.Genre.Name
+          }));
 
           //get favorites second
           const favResponse = await fetch(`https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}`, {
@@ -58,13 +74,49 @@ export const MainView = () => {
           const favList = Array.isArray(favData.FavoriteMovies)
           ? favData.FavoriteMovies 
           : [];
-          setFavMovies(favList);
+          console.log(favList);
+          const moviesWithFav = moviesFromApi.map((movie) => ({
+            ...movie,
+            isFavorite: favList.some((fav) => fav.toString() === movie.id),
+          }));
 
+          setFavMovies(Array.isArray(favList) ? favList : []);
+          setMovies(moviesWithFav);
         };
         getData();
       }, [token, user]);
 
-      
+      //toggle favorite movie
+      const toggleFav = async () => {
+        const url = `https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}/FavoriteMovies/${movie.id}`;
+        const toggle = isFavorite ? "DELETE" : "PUT";
+
+        try {
+          const response = await fetch(url, {
+            toggle, 
+            headers: {
+              "Authorization": `Bearer: ${token}`,
+              "Content-Type": "application/json"
+            },
+          });
+
+          if(!response.ok) throw Error("Failed to favorite.");
+
+          const updatedFavs = await response.json();
+
+          //updating favs
+          setFavList(updatedFavs.FavoriteMovies);
+          setMovies((oldMovies) =>
+            oldMovies.map((movie) =>
+              movie.id === movieId
+              ? {...movie, isFavorite: !isFavorite}
+              : movie
+            )
+          );
+        } catch(error){
+          alert("An error occurred while favoriting.");
+        }
+      };
 
       const handleLogout = () => {
         setUser = (null);
@@ -165,7 +217,8 @@ export const MainView = () => {
                   token={token} 
                   favMovies = {favMovies} 
                   onProfileUpdate = {handleProfileUpdate}
-                  onLogout = {handleLogout}/>
+                  onLogout = {handleLogout}
+                  onRemove = {toggleFav} />
                 </Col>
               )}
             </>

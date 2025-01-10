@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Button, Card } from "react-bootstrap";
 
 
-export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, onLogout }) => {
+export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, onLogout, onRemove }) => {
     const localUser = JSON.parse(localStorage.getItem("user"));
     if(!localUser) {
         return <p>Sign in to view your profile.</p>
@@ -27,16 +27,46 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
         
     }, [token]);
 
-    useEffect(() => {
+    {/*useEffect(() => {
         if (favMovies !== null) { 
           console.log(favMovies); // Logs only when favMovies is not null
         }
-      }, [favMovies]); 
+      }, [favMovies]); */}
 
     const handleLogout = () =>{
         onLogout();
         navigate("/login");
     };
+
+    const handleRemoveFav = (movieId) => {
+        if(!username) {
+            throw Error("Please sign in.");
+            return;
+        }
+
+        const token = localStorage.getItem("token");
+
+        fetch((`https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}/FavoriteMovies/${movieId}`), {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer: ${token}`,
+                "Content-Type": "applciaton/json"
+            },
+        })
+        .then(response => {
+            if(!response.ok){
+                throw Error("Fail to remove favorite");
+            }
+            return response.json();
+        })
+        .then(() => {
+            setFavMovies(favMovies.filter(m => String(m.id) !== String(movieId)));
+        })
+        .catch(error => {
+            setError(error.message);
+        });
+    };
+
     const deleteAccount = () => {
         if(window.confirm("Do you really want to delete your account forever?")) {
             const token = localStorage.getItem("token");

@@ -18,10 +18,10 @@ export const MovieCard = ({ movie }) => {
                 </Link>
             </Card.Body>
             <Button
-           // variant = {isFavorite ? "dark" : "light"}
+            variant = {isFavorite ? "dark" : "light"}
             className = "btn-heart"
             >
-                {/*{isFavorite ? (
+                {isFavorite ? (
                     <>
                         <i className="heart-fill"></i>
                     </>
@@ -29,7 +29,7 @@ export const MovieCard = ({ movie }) => {
                     <>
                         <i className="heart"></i>
                     </>
-                )}*/}
+                )}
             </Button>
         </Card>
 
