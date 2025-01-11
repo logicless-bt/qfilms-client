@@ -87,13 +87,13 @@ export const MainView = () => {
       }, [token, user]);
 
       //toggle favorite movie
-      const toggleFav = async () => {
-        const url = `https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}/FavoriteMovies/${movie.id}`;
-        const toggle = isFavorite ? "DELETE" : "PUT";
+      const toggleFav = async (movieId, isFavorite) => {
+        const url = `https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}/FavoriteMovies/${movieId}`;
+        const method = isFavorite ? "DELETE" : "POST";
 
         try {
           const response = await fetch(url, {
-            toggle, 
+            method, 
             headers: {
               "Authorization": `Bearer: ${token}`,
               "Content-Type": "application/json"
@@ -177,7 +177,11 @@ export const MainView = () => {
                 <Col>The movies list is empty...</Col>
               ) : (
                 <Col md="8">
-                  <MovieView movies={movies} />
+                  <MovieView movies={movies} 
+                  user = {user}
+                  favMovies = {favMovies}
+                  onToggleFav = {toggleFav}
+                  />
                 </Col>
               )}
             </>

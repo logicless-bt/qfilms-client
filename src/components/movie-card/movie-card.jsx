@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 
 //import "./movie-card.scss";
 
-export const MovieCard = ({ movie }) => {
+export const MovieCard = ({ movie, isFavorite, onToggleFav, onRemove }) => {
     return (
         <Card className="h-100">
             <Card.Img variant = "top" src="movie.img" />
@@ -19,15 +19,16 @@ export const MovieCard = ({ movie }) => {
             </Card.Body>
             <Button
             variant = {isFavorite ? "dark" : "light"}
+            onClick = {onToggleFav}
             className = "btn-heart"
             >
                 {isFavorite ? (
                     <>
-                        <i className="heart-fill"></i>
+                        <i className="dark"></i>
                     </>
                 ) : (
                     <>
-                        <i className="heart"></i>
+                        <i className="light"></i>
                     </>
                 )}
             </Button>
@@ -42,5 +43,7 @@ MovieCard.propTypes = {
         title: PropTypes.string.isRequired,
         director: PropTypes.string,
         genre: PropTypes.string
-    }).isRequired
+    }).isRequired,
+    isFavorite: PropTypes.bool,
+    onToggleFav: PropTypes.func
 };

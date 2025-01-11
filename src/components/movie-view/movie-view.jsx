@@ -1,13 +1,18 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
 //import "./movie-view.scss"
 
-export const MovieView = ({ movies }) => {
+export const MovieView = ({ movies, favMovies, onToggleFav }) => {
     const { movieId } = useParams();
-    const movie = movies.find((m) => m.id === movieId);
+    const movie = movies.find((m) => String(m.id) === String(movieId));
+    const isFavorite = Array.isArray(favMovies) && favMovies.some(fav => fav === movieId);
+    console.log(isFavorite);
+    const handleToggleFav = () => {
+        onToggleFav(movie.id, isFavorite);
+    };
 
     return (
         <div>
@@ -29,6 +34,13 @@ export const MovieView = ({ movies }) => {
             <Link to={`/`}>
                 <button className = "back-button">Back</button>
             </Link>
+
+            <div className = "justify-content-end">
+                <Button
+                    variant = {isFavorite ? "dark" : "light"}
+                    onClick = {handleToggleFav}
+                ></Button>
+            </div>
         </div>
     );
 };

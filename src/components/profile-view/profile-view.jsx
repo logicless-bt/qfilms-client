@@ -134,7 +134,10 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
                                         <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
                                     </Card.Title>
                                 </Card.Body>
-                                {/* handleRemoveFav once implemented */}
+                                <Button
+                                    className = "btn-heart dark"
+                                    onClick = {() => handleRemoveFav(movie.id)}
+                                ></Button>
                             </Card>
                         </Col>
                     ))
