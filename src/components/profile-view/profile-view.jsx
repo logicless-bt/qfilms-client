@@ -17,6 +17,12 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
     const [email, setEmail] = useState(user.Email? user.Email : null);
     const [birthday, setBirthday] = useState(user.Birthday? user.Birthday : null);
     const [error, setError] = useState(null);
+    const [updatedInfo, setUpdatedInfo] = useState({
+        username: user.username || '',
+        password: '',
+        birthday: user.birthday || '',
+        email: user.email || '',
+    });
     
    // const profile = users.find((p) => p.Username === user.Username);
     useEffect(() => {
@@ -26,6 +32,13 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
 
         
     }, [token]);
+
+    //update username
+    useEffect(() => {
+        if(user && user.username !== username) {
+            setUsername(user.username);
+        }
+    }, [user]);
 
     {/*useEffect(() => {
         if (favMovies !== null) { 
@@ -66,6 +79,18 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
             setError(error.message);
         });
     };
+
+    const profileUpdate = (e) => {
+        e.preventDefault();
+        //double check this later
+        const newData = {
+            newUsername: updatedInfo.username || undefined,
+            newPassword: updatedInfo.password || undefined,
+            newBirthday: updatedInfo.birthday || undefined,
+            newEmail: updatedInfo.email || undefined
+            
+        }
+    }
 
     const deleteAccount = () => {
         if(window.confirm("Do you really want to delete your account forever?")) {
