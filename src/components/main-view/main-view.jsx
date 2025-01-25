@@ -29,7 +29,7 @@ export const MainView = () => {
 
       const getData = async () => {
         //get movies first
-        {/*fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
+        /*fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
           headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => response.json())
@@ -44,13 +44,13 @@ export const MainView = () => {
           });
           
             setMovies(moviesFromApi);
-          });*/}
+          });*/
 
           //get movies first
           const getMovies = await fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
             headers: { 
               "Authorization": `Bearer ${token}`,
-              "Content-Type": "application.json"
+              "Content-Type": "application/json"
             },
           });
 
@@ -65,7 +65,7 @@ export const MainView = () => {
           //get favorites second
           const favResponse = await fetch(`https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}`, {
             headers: {
-              Authorization: `Bearer ${storedToken}`,
+              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json"
             },
           });
@@ -74,7 +74,6 @@ export const MainView = () => {
           const favList = Array.isArray(favData.FavoriteMovies)
           ? favData.FavoriteMovies 
           : [];
-          console.log(favList);
           const moviesWithFav = moviesFromApi.map((movie) => ({
             ...movie,
             isFavorite: favList.some((fav) => fav.toString() === movie.id),
@@ -88,24 +87,27 @@ export const MainView = () => {
 
       //toggle favorite movie
       const toggleFav = async (movieId, isFavorite) => {
+        if(!user || !token){
+          throw Error("Please log in to favorite.");
+        }
         const url = `https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}/FavoriteMovies/${movieId}`;
         const method = isFavorite ? "DELETE" : "POST";
-
         try {
           const response = await fetch(url, {
             method, 
             headers: {
-              "Authorization": `Bearer: ${token}`,
+              "Authorization": `Bearer ${token}`,
               "Content-Type": "application/json"
             },
           });
 
           if(!response.ok) throw Error("Failed to favorite.");
-
           const updatedFavs = await response.json();
+          console.log("before uF.FM " + updatedFavs.FavoriteMovies);
 
           //updating favs
-          setFavList(updatedFavs.FavoriteMovies);
+          setFavMovies(updatedFavs.FavoriteMovies);
+          console.log("after updatedFavs.FM")
           setMovies((oldMovies) =>
             oldMovies.map((movie) =>
               movie.id === movieId
@@ -119,14 +121,14 @@ export const MainView = () => {
       };
 
       const handleLogout = () => {
-        setUser = (null);
-        setToken = (null);
+        setUser(null);
+        setToken(null);
         localStorage.clear();
         localStorage.removeItem("user");
         localStorage.removeItem("token");
       }
 
-    if (movies.length == 0) {
+    if (user && movies.length == 0) {
         return <div>The list is empty.</div>;
     }
 
@@ -198,7 +200,7 @@ export const MainView = () => {
               ) : movies.length ===0 ? (
                 <Col>The movies list is empty...</Col>
               ) : (
-                movies.map((movie) => (
+                Array.isArray(movies) && movies.map((movie) => (
                   <Col className="mb-4" key={movie.id} md={3}>
                     <MovieCard movie={movie} />
                   </Col>

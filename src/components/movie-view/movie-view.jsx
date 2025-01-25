@@ -9,7 +9,6 @@ export const MovieView = ({ movies, favMovies, onToggleFav }) => {
     const { movieId } = useParams();
     const movie = movies.find((m) => String(m.id) === String(movieId));
     const isFavorite = Array.isArray(favMovies) && favMovies.some(fav => fav === movieId);
-    console.log(isFavorite);
     const handleToggleFav = () => {
         onToggleFav(movie.id, isFavorite);
     };
