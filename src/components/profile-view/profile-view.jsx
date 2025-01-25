@@ -18,10 +18,10 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
     const [birthday, setBirthday] = useState(user.Birthday? user.Birthday : null);
     const [error, setError] = useState(null);
     const [updatedInfo, setUpdatedInfo] = useState({
-        username: user.username || '',
+        username: user.Username || '',
         password: '',
-        birthday: user.birthday || '',
-        email: user.email || '',
+        birthday: user.Birthday || '',
+        email: user.Email || '',
     });
     
    // const profile = users.find((p) => p.Username === user.Username);
@@ -40,19 +40,13 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
         }
     }, [user]);
 
-    {/*useEffect(() => {
-        if (favMovies !== null) { 
-          console.log(favMovies); // Logs only when favMovies is not null
-        }
-      }, [favMovies]); */}
-
     const handleLogout = () =>{
         onLogout();
         navigate("/login");
     };
 
     const handleRemoveFav = (movieId) => {
-        if(!username) {
+        if(!user) {
             throw Error("Please sign in.");
             return;
         }
