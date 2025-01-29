@@ -5,6 +5,7 @@ import { Row, Col, Form, Button } from "react-bootstrap";
 import { MovieView } from "../movie-view/movie-view";
 import { Link } from "react-router-dom";
 import { Button, Card } from "react-bootstrap";
+import "./profile-view.scss";
 
 
 export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, onLogout, onRemove }) => {
@@ -113,20 +114,20 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
                 <Col md={8}>
                     <span>Username: </span>
                     <span>{localUser.Username}</span>
-                    <Button>Change Username</Button>
+                    <Button className = "form-button">Change Username</Button>
                 </Col>
 
                 <Col md={8}>
                     <span>Email: </span>
                     <span>{localUser.Email}</span>
-                    <Button
+                    <Button className = "form-button"
                     >Change Email</Button>
                 </Col>
 
                 <Col md={8}>
                     <span>Birthday: </span>
                     <span>{localUser.Birthday}</span>
-                    <Button
+                    <Button className = "form-button"
                     >Change Birthday</Button>
                 </Col>
             </Row>
@@ -134,7 +135,7 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
             <Row>
                 <Col>
                     <Button
-                    variant="outline-dark"
+                    className="delete-button"
                     onClick={deleteAccount}>Delete Account</Button>
                 </Col>
             </Row>
@@ -146,7 +147,7 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
                         <Col key={movies.id} sm={6} md={4} lg={3}>
                             <Card>
                                 <div className="image-container">
-                                    <Card.Img variant="top" src="#" alt={movies.title} /> {/*src={movie.img.imgUrl} */}
+                                    <Card.Img variant="top" src= {movie.image} alt={movies.title} /> {/*src={movie.img.imgUrl} */}
                                 </div>
                                 <Card.Body>
                                     <Card.Title>
@@ -154,7 +155,7 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
                                     </Card.Title>
                                 </Card.Body>
                                 <Button
-                                    className = "btn-heart dark"
+                                    className = "btn-heart"
                                     onClick = {() => handleRemoveFav(movie.id)}
                                 ></Button>
                             </Card>

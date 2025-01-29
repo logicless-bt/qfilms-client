@@ -1,0 +1,35 @@
+.main {
+    background-color: slategray;
+}
+
+.bod {
+    background-color: slategray;
+}
+
+.small-font {
+    font-size: 80%;
+    font-family: serif;
+}
+
+.back-button {
+    padding: 4px 12px 4px 12px;
+    color: black;
+    background-color: white;
+    border: 1px solid darkgray;
+    border-radius: 4px;
+}
+
+Button.open {
+    padding: 4px 12px 4px 12px;
+    color: whitesmoke;
+    background-color: cornflowerblue;
+    border: black;
+}
+
+Button.btn-fav {
+    background-color: lightgreen;
+}
+
+Button.not-fav {
+    background-color: white;
+}

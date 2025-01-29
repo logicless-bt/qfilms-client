@@ -8,6 +8,7 @@ import { SignupView } from "../signup-view/signup-view";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { ProfileView } from "../profile-view/profile-view";
+import './main-view.scss';
 
 export const MainView = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -58,8 +59,10 @@ export const MainView = () => {
           const moviesFromApi = moviesData.map((movie) => ({
             id: movie._id.toString(),
             title: movie.Title,
+            description: movie.Description,
             director: movie.Director.Name,
-            genre: movie.Genre.Name
+            genre: movie.Genre.Name,
+            image: movie.ImagePath
           }));
 
           //get favorites second

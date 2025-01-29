@@ -1,5 +1,64 @@
-.my-flix {
-  color: #4682b4;
+import button {
+  padding: 4px 12px;
+}
+
+.main, .bod {
+  background-color: #708090;
+}
+
+.small-font {
+  font-family: serif;
+  font-size: 80%;
+}
+
+.back-button {
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #a9a9a9;
+  border-radius: 4px;
+  padding: 4px 12px;
+}
+
+Button.open {
+  color: #f5f5f5;
+  background-color: #6495ed;
+  border: #000;
+  padding: 4px 12px;
+}
+
+Button.btn-fav {
+  background-color: #90ee90;
+}
+
+Button.not-fav {
+  background-color: #fff;
+}
+
+.nav-bar {
+  color: #fff;
+  background-color: #6495ed;
+}
+
+.nav-link {
+  color: #fff;
+}
+
+Button.form-button {
+  color: #f5f5f5;
+  background-color: #4169e1;
+  margin: 3px 6px;
+  padding: 4px 8px;
+}
+
+Button.delete-button {
+  color: #000;
+  background-color: coral;
+  border: 1px solid #000;
+  padding: 4px 12px;
+}
+
+#root {
+  background-color: #708090;
 }
 
 :root, [data-bs-theme="light"] {
