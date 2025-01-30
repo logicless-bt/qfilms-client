@@ -29,24 +29,6 @@ export const MainView = () => {
       }
 
       const getData = async () => {
-        //get movies first
-        /*fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          const moviesFromApi = data.map((movie) => {
-            return {
-              id: movie._id.toString(),
-              title: movie.Title,
-              director: movie.Director.Name,
-              genre: movie.Genre.Name
-            };
-          });
-          
-            setMovies(moviesFromApi);
-          });*/
-
           //get movies first
           const getMovies = await fetch(("https://qfilms-e3cad25d1fad.herokuapp.com/movies"), {
             headers: { 
@@ -61,7 +43,9 @@ export const MainView = () => {
             title: movie.Title,
             description: movie.Description,
             director: movie.Director.Name,
+            directorBio: movie.Director.Bio,
             genre: movie.Genre.Name,
+            genreDescription: movie.Genre.Description,
             image: movie.ImagePath
           }));
 
