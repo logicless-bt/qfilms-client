@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect }  from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Form, Button } from "react-bootstrap";
-import { MovieView } from "../movie-view/movie-view";
 import { Link } from "react-router-dom";
 import { Button, Card } from "react-bootstrap";
 import "./profile-view.scss";
@@ -24,6 +23,8 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
         birthday: user.Birthday || '',
         email: user.Email || '',
     });
+
+    const favMoviesObjects = movies.filter(movie => favMovies.includes(movie.id));
     
    // const profile = users.find((p) => p.Username === user.Username);
     useEffect(() => {
@@ -57,8 +58,8 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
         fetch((`https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}/FavoriteMovies/${movieId}`), {
             method: "DELETE",
             headers: {
-                "Authorization": `Bearer: ${token}`,
-                "Content-Type": "applciaton/json"
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
             },
         })
         .then(response => {
@@ -136,26 +137,28 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
                 <Col>
                     <Button
                     className="delete-button"
-                    onClick={deleteAccount}>Delete Account</Button>
+                    onClick={() => deleteAccount}>Delete Account</Button>
                 </Col>
             </Row>
 
             <Row className="justify-content-center mb-5">
                 <h5 className ="font-weight-bold-center">Favorite Movies: </h5>
                 {favMovies && favMovies.length > 0 ? (
-                    favMovies.map((movie) => (
-                        <Col key={movies.id} sm={6} md={4} lg={3}>
+                    favMoviesObjects.map((movie) => (
+                        <Col key={movie.id} sm={6} md={5} lg={5}>
                             <Card>
-                                <div className="image-container">
-                                    <Card.Img variant="top" src= {movie.image} alt={movies.title} /> {/*src={movie.img.imgUrl} */}
-                                </div>
+                                <Card.Img variant="top" src= {movie.image} alt={movie.title} />
                                 <Card.Body>
                                     <Card.Title>
-                                        <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
+                                        <Link to={`/movies/${movie.id}`}>
+                                            <Button className="open">
+                                                {movie.title}
+                                            </Button>
+                                        </Link>
                                     </Card.Title>
                                 </Card.Body>
                                 <Button
-                                    className = "btn-heart"
+                                    className = "btn-fav"
                                     onClick = {() => handleRemoveFav(movie.id)}
                                 ></Button>
                             </Card>

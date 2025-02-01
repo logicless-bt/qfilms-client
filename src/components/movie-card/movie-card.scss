@@ -7,7 +7,6 @@
 }
 
 .small-font {
-    font-size: 80%;
     font-family: serif;
 }
 
@@ -30,6 +29,22 @@ Button.btn-fav {
     background-color: lightgreen;
 }
 
+Button.btn-fav:hover {
+    background-color: lightgreen;
+}
+
+Button.btn-fav:focus, Button.btn-fav:active {
+    background-color: lightgreen !important;
+}
+
 Button.not-fav {
-    background-color: white;
+    background-color: whitesmoke;
+}
+
+Button.not-fav:hover {
+    background-color: whitesmoke;
+}
+
+Button.not-fav:focus, Button.not-fav:active {
+    background-color: whitesmoke !important;
 }

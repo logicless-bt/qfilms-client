@@ -17,6 +17,9 @@ export const MainView = () => {
     const [user, setUser] = useState(storedUser? storedUser: null);
     const [token, setToken] = useState(storedToken? storedToken: null);
     const [favMovies, setFavMovies] = useState(null);
+    const [genreFilter, setGenreFilter] = useState(null);
+    const [directorFilter, setDirectorFilter] = useState(null);
+    const [titleFilter, setTitleFilter] = useState(null);
 
     const handleProfileUpdate = (newUser) => {
       setUser(newUser);
@@ -115,6 +118,16 @@ export const MainView = () => {
         localStorage.removeItem("token");
       }
 
+    const filterMovies = (movies) => {
+      return movies.filter((movie) => {
+        return ( 
+          (directorFilter ? movie.director.toLowerCase().includes(directorFilter.toLowerCase()) : true) &&
+          (genreFilter ? movie.genre.toLowerCase().includes(genreFilter.toLowerCase()) : true) &&
+          (titleFilter ? movie.title.toLowerCase().includes(titleFilter.toLowerCase()) : true)
+        );
+      });
+    };
+
     if (user && movies.length == 0) {
         return <div>The list is empty.</div>;
     }
@@ -145,7 +158,7 @@ export const MainView = () => {
           element={
             <>
               {user ? ( 
-                <Navigate to= "/login" />
+                <Navigate to= "/" />
               ) : (
                 <Col md={5}>
                   <LoginView onLoggedIn={(user) => setUser(user)} />

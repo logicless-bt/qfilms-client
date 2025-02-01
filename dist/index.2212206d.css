@@ -8,7 +8,6 @@ import button {
 
 .small-font {
   font-family: serif;
-  font-size: 80%;
 }
 
 Button.open {
@@ -18,12 +17,20 @@ Button.open {
   padding: 4px 12px;
 }
 
-Button.btn-fav {
+Button.btn-fav, Button.btn-fav:hover {
   background-color: #90ee90;
 }
 
-Button.not-fav {
-  background-color: #fff;
+Button.btn-fav:focus, Button.btn-fav:active {
+  background-color: #90ee90 !important;
+}
+
+Button.not-fav, Button.not-fav:hover {
+  background-color: #f5f5f5;
+}
+
+Button.not-fav:focus, Button.not-fav:active {
+  background-color: #f5f5f5 !important;
 }
 
 .back-button {
@@ -38,6 +45,14 @@ Button.not-fav {
   background-color: #708090;
   justify-content: center;
   display: flex;
+}
+
+Button.btn-fav {
+  background-color: #90ee90;
+}
+
+Button.not-fav {
+  background-color: #f5f5f5;
 }
 
 .nav-bar {
@@ -61,6 +76,11 @@ Button.delete-button {
   background-color: coral;
   border: 1px solid #000;
   padding: 4px 12px;
+}
+
+Button.open {
+  color: #f5f5f5;
+  background-color: #6495ed;
 }
 
 #root {

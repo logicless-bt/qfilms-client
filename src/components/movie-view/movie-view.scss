@@ -12,6 +12,14 @@
   justify-content: center;
 }
 
+Button.btn-fav {
+  background-color: lightgreen;
+}
+
+Button.not-fav {
+  background-color: whitesmoke;
+}
+
 /*.poster {
   max-width: 100%;
   max-height: 100%;

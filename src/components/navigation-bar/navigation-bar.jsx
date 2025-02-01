@@ -14,8 +14,8 @@ export const NavigationBar = ({ user, handleLogout }) => {
                 <Navbar.Collapse>
                     <Nav>
                         {/* Home */}
-                        <Nav.Item className="nav-link">
-                            <Nav.Link href="/" >
+                        <Nav.Item>
+                            <Nav.Link href="/" className="nav-link">
                                 Home
                             </Nav.Link>
                         </Nav.Item>
@@ -28,7 +28,7 @@ export const NavigationBar = ({ user, handleLogout }) => {
 
                         <Nav.Item>
                             {user ? (
-                                <Nav.Link onClick={handleLogout} className="nav-link">
+                                <Nav.Link onClick={handleLogout} href = "/login" className="nav-link">
                                     Log Out
                                 </Nav.Link>
                             ) : ( 
