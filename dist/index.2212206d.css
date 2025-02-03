@@ -87,6 +87,11 @@ Button.open {
   background-color: #708090;
 }
 
+Button.clear-btn {
+  color: #708090;
+  background-color: pink;
+}
+
 :root, [data-bs-theme="light"] {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
