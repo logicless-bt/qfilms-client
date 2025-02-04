@@ -38,7 +38,7 @@ export const MovieCard = ({ movie, isFavorite, onRemove }) => {
 //prop constraints
 MovieCard.propTypes = {
     movie: PropTypes.shape({
-        title: PropTypes.string.isRequired,
+        title: PropTypes.string,
         director: PropTypes.string,
         genre: PropTypes.string
     }).isRequired,

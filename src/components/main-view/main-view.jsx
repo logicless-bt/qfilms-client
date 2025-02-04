@@ -8,6 +8,8 @@ import { SignupView } from "../signup-view/signup-view";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { ProfileView } from "../profile-view/profile-view";
+import { GenreView } from '../genre-view/genre-view';
+import { DirectorView } from '../director-view/director-view';
 import './main-view.scss';
 
 export const MainView = () => {
@@ -288,6 +290,79 @@ export const MainView = () => {
                       }}>Clear All Filters</Button>
                     </Col>
                   </Row>
+
+                  <Row className = "d-flex justify-content-center">
+                    {directorFilter || genreFilter || titleFilter ? (
+                      <Row>
+                        <p>Filter results:</p>
+                        <Col>
+                          <nav aria-label="breadcrumb" >
+                            <ol className = "breadcrumb">
+                              {directorFilter && (
+																<li className='breadcrumb-item'>
+																	<span className='font-weight-bold'>Director: </span>
+																	<Navigate to={`/directors/${directorFilter}`}>{directorFilter}</Navigate>
+																	<button
+																		className='btn btn-link'
+																		onClick={() => setDirectorFilter('')}>
+																	</button>
+																</li>
+															)}
+                              {genreFilter && (
+																<li className='breadcrumb-item'>
+																	<span className='font-weight-bold'>Genre: </span>
+																	<Navigate to={`/genres/${genreFilter}`}>{genreFilter}</Navigate>
+																	<Button
+																		className='btn btn-link'
+																		onClick={() => setGenreFilter('')}>
+																	</Button>
+																</li>
+															)}
+                              {titleFilter && (
+																<li className='breadcrumb-item'>
+																	<span className='font-weight-bold'>{`Title: ${titleFilter}`}</span>
+																	<Button
+																		className='btn btn-link'
+																		onClick={() => setTitleFilter('')}>
+																	</Button>
+																</li>
+															)}
+                            </ol>
+                          </nav>
+                        </Col>
+                      </Row>
+                    ) : null}
+                  </Row>
+
+                  {/* null */}
+                  {filterMovies(movies).length === 0 ? (
+										<Row className='d-flex justify-content-center'>
+											<Col>
+												<p>Filter returned zero results.</p>
+											</Col>
+										</Row>
+									) : (
+                    filterMovies(movies).map((movie) => (
+                      <Col
+                        key = {movie.id}
+                        sm = {8}
+                        md ={4}
+                        lg = {3}
+                      >
+                        <MovieCard 
+                          movie = {movie}
+                          isFavorite = {
+                            Array.isArray(favMovies) &&
+                            favMovies.some(
+                              (fav) => fav.toString() === movie.id.toString()
+                            )
+                          }
+                          onToggleFav={(movieId, isFavorite) =>
+                            toggleFav(movieId, isFavorite)
+                        } />
+                      </Col>
+                    ))
+                  )}
                 </Row>
                 
                 
@@ -320,6 +395,40 @@ export const MainView = () => {
                 </Col>
               )}
             </>
+          }
+          />
+
+          {/* Individual director */}
+          <Route 
+            path="/directors/:directorName"
+            element = {
+              !user ? (
+                <Navigate to = "/login" replace />
+              ) : (
+                  <DirectorView
+                  user = {user}
+                  movies = {movies}
+                  favMovies = {favMovies}
+                  token = {token}
+                  />
+              )
+            }
+          />
+
+          {/* filter by genres */}
+          <Route
+          path = '/genres/:genreName'
+          element = {
+            !user ? (
+              <Navigate to = '/login' replace />
+            ) : (
+              <GenreView
+              movies = {movies}
+              onToggleFav = {toggleFav}
+              favMovies = {favMovies}
+              token = {token}
+              />
+            )
           }
           />
 
