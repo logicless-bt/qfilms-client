@@ -12,10 +12,13 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
     if(!localUser) {
         return <p>Sign in to view your profile.</p>
     }
+    const formatDate = (iso) => {
+        return new Date(iso).toLocaleDateString("en-US");
+    }
     const [username, setUsername] = useState(user.Username? user.Username : null);
     const [password, setPassword] = useState(user.Password? user.Password : null);
     const [email, setEmail] = useState(user.Email? user.Email : null);
-    const [birthday, setBirthday] = useState(user.Birthday? user.Birthday : null);
+    const [birthday, setBirthday] = useState(user.Birthday? formatDate(user.Birthday) : null);
     const [error, setError] = useState(null);
     const [updatedInfo, setUpdatedInfo] = useState({
         username: user.Username || '',
@@ -23,6 +26,7 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
         birthday: user.Birthday || '',
         email: user.Email || '',
     });
+    
 
     const favMoviesObjects = movies.filter(movie => favMovies.includes(movie.id));
     
@@ -37,8 +41,8 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
 
     //update username
     useEffect(() => {
-        if(user && user.username !== username) {
-            setUsername(user.username);
+        if(user && user.Username !== username) {
+            setUsername(user.Username);
         }
     }, [user]);
 
@@ -88,14 +92,14 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
         }
     }
 
-    const deleteAccount = () => {
+    const handleDeleteAccount = () => {
         if(window.confirm("Do you really want to delete your account forever?")) {
             const token = localStorage.getItem("token");
 
             fetch(`https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}`, {
                 method: "DELETE",
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    "Authorization": `Bearer ${token}`
                 },
             })
             .then(response => {
@@ -109,39 +113,113 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
             })
         }
     };
+
+    const handleUpdate = (e) => {
+        e.preventDefault();
+
+        const newFields = {};
+        if(username !== user.Username) newFields.Username = username;
+        //should only function if password field has content
+        if(password) newFields.Password = password; 
+        if(email !== user.Email) newFields.Email = email;
+        if(birthday !== formatDate(user.Birthday)) {
+            newFields.Birthday = birthday;
+        }
+
+        if (Object.keys(newFields).length === 0) {
+            alert("All fields remain the same.");
+            return;
+        } 
+        
+        fetch(`https://qfilms-e3cad25d1fad.herokuapp.com/users/${user.Username}`, {
+            method: "PUT",
+            body: JSON.stringify(newFields),
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": 'application/json',
+            },
+        })
+        .then((response) => {
+            if(!response.ok) {
+                throw Error("User not updated.");
+            }
+            return response.json();
+            })
+            .then((data) => {
+                if(data) {
+                    localStorage.setItem("user", JSON.stringify(data));
+                    setUsername(data);
+                    alert("User updated.");
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                alert("User failed to update.");
+            });
+        }
+
     return (
         <>
+            
             <Row>
-                <Col md={8}>
-                    <span>Username: </span>
-                    <span>{localUser.Username}</span>
-                    <Button className = "form-button">Change Username</Button>
-                </Col>
+                <h2>Profile Information: </h2>
+            </Row>
+            <Row>
+                <Col md = {5} lg = {4}>
+                    <Form onSubmit = {handleUpdate}>
+                        <Form.Group controlId = "username-form">
+                            <Form.Label>Username: </Form.Label>
+                            <Form.Control
+                            type = 'text'
+                            value = {username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            minlength = "4"
+                            readOnly/> 
+                         </Form.Group>
 
-                <Col md={8}>
-                    <span>Email: </span>
-                    <span>{localUser.Email}</span>
-                    <Button className = "form-button"
-                    >Change Email</Button>
-                </Col>
+                        <Form.Group controlId="password-form" className="mb-3">
+                            <Form.Label>New Password:</Form.Label>
+                            <Form.Control
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </Form.Group>
 
-                <Col md={8}>
-                    <span>Birthday: </span>
-                    <span>{localUser.Birthday}</span>
-                    <Button className = "form-button"
-                    >Change Birthday</Button>
+                        <Form.Group controlId="email-form" className="mb-3">
+                            <Form.Label>Email:</Form.Label>
+                            <Form.Control
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="formBirthday" className="mb-3">
+                            <Form.Label>Birthday:</Form.Label>
+                            <Form.Control
+                                type="date"
+                                value={birthday}
+                                onChange={(e) => setBirthday(e.target.value)}
+                                className="bg-secondary text-white"
+                            />
+                        </Form.Group>
+
+                        <Button className = "open" onClick = "handleUpdate">
+                            Update
+                        </Button>
+                        <Button className = "delete-button" onClick = "handleDeleteAccount">
+                            Delete
+                        </Button>
+                    </Form>
                 </Col>
             </Row>
+            
+                
 
-            <Row>
-                <Col>
-                    <Button
-                    className="delete-button"
-                    onClick={() => deleteAccount}>Delete Account</Button>
-                </Col>
-            </Row>
-
-            <Row className="justify-content-center mb-5">
+            <Row className="justify-content-center">
                 <h5 className ="font-weight-bold-center">Favorite Movies: </h5>
                 {favMovies && favMovies.length > 0 ? (
                     favMoviesObjects.map((movie) => (
