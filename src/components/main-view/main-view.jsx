@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Container, Dropdown, DropdownButton, Button } from 'react-bootstrap';
+import { Row, Col, Dropdown, DropdownButton, Button } from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";

@@ -1,13 +1,12 @@
 import React from "react";
 import { useState, useEffect }  from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { Button, Card } from "react-bootstrap";
+import { Row, Col, Form, Button, Card } from "react-bootstrap";
+import { Link, Navigate } from "react-router-dom";
 import "./profile-view.scss";
 
 
-export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, onLogout, onRemove }) => {
+export const ProfileView = ({ movies, user, favMovies, onLogout }) => {
     const localUser = JSON.parse(localStorage.getItem("user"));
     if(!localUser) {
         return <p>Sign in to view your profile.</p>
@@ -15,16 +14,14 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
 
     const [favoriteMovies, setFavoriteMovies] = useState([]);
     const [username, setUsername] = useState(user.Username? user.Username : null);
-    const [password, setPassword] = useState(user.Password? user.Password : null);
     const [email, setEmail] = useState(user.Email? user.Email : null);
     const [birthday, setBirthday] = useState(user.Birthday? user.Birthday : null);
-    const [error, setError] = useState(null);
-    const [updatedInfo, setUpdatedInfo] = useState({
+    /*const [updatedInfo, setUpdatedInfo] = useState({
         username: user.Username || '',
         password: '',
         birthday: user.Birthday || '',
         email: user.Email || '',
-    });
+    });*/
     
     useEffect(() => {
         const favMoviesObjects = movies.filter(movie => favMovies.includes(movie.id));
@@ -39,7 +36,7 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
         }
 
         
-    }, [token]);
+    }, [user]);
 
     //update username
     useEffect(() => {
@@ -57,13 +54,12 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
 
     const handleLogout = () =>{
         onLogout();
-        navigate("/login");
+        <Navigate to = "/login" />
     };
 
     const handleRemoveFav = (movieId) => {
         if(!user) {
             throw Error("Please sign in.");
-            return;
         }
 
         const token = localStorage.getItem("token");
@@ -85,11 +81,11 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
             setFavoriteMovies(favMovies.filter(m => String(m.id) !== String(movieId)));
         })
         .catch(error => {
-            setError(error.message);
+            throw Error(error);
         });
     };
 
-    const profileUpdate = (e) => {
+    /*const profileUpdate = (e) => {
         e.preventDefault();
         //double check this later
         const newData = {
@@ -99,7 +95,7 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
             newEmail: updatedInfo.email || undefined
             
         }
-    }
+    }*/
 
     const handleDeleteAccount = () => {
         if(window.confirm("Do you really want to delete your account forever?")) {
@@ -118,7 +114,7 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
             })
             .then(handleLogout())
             .catch(error => {
-                setError(error.message);
+                throw Error(error.message);
             })
         }
     };
@@ -126,10 +122,11 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
     const handleUpdate = (e) => {
         e.preventDefault();
 
+        const token = localStorage.getItem("token");
+
         const newFields = {};
         if(username !== user.Username) newFields.Username = username;
         //should only function if password field has content
-        if(password) newFields.Password = password; 
         if(email !== user.Email) newFields.Email = email;
         if(birthday !== user.Birthday) {
             newFields.Birthday = birthday;
@@ -252,10 +249,10 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
 
 
 };
-ProfileView.proptypes = {
+ProfileView.propTypes = {
     user: PropTypes.object.isRequired,
     movies: PropTypes.array.isRequired,
     onLogout: PropTypes.func.isRequired,
     favMovies: PropTypes.array.isRequired,
-    onProfileUpdate: PropTypes.func.isRequired
+    onProfileUpdate: PropTypes.func.isRequired,
 };
