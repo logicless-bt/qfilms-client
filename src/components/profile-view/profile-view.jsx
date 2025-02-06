@@ -12,13 +12,12 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
     if(!localUser) {
         return <p>Sign in to view your profile.</p>
     }
-    const formatDate = (iso) => {
-        return new Date(iso).toLocaleDateString("en-US");
-    }
+
+    const [favoriteMovies, setFavoriteMovies] = useState([]);
     const [username, setUsername] = useState(user.Username? user.Username : null);
     const [password, setPassword] = useState(user.Password? user.Password : null);
     const [email, setEmail] = useState(user.Email? user.Email : null);
-    const [birthday, setBirthday] = useState(user.Birthday? formatDate(user.Birthday) : null);
+    const [birthday, setBirthday] = useState(user.Birthday? user.Birthday : null);
     const [error, setError] = useState(null);
     const [updatedInfo, setUpdatedInfo] = useState({
         username: user.Username || '',
@@ -27,8 +26,11 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
         email: user.Email || '',
     });
     
-
-    const favMoviesObjects = movies.filter(movie => favMovies.includes(movie.id));
+    useEffect(() => {
+        const favMoviesObjects = movies.filter(movie => favMovies.includes(movie.id));
+        setFavoriteMovies(favMoviesObjects);
+    }, [favoriteMovies])
+    
     
    // const profile = users.find((p) => p.Username === user.Username);
     useEffect(() => {
@@ -45,6 +47,13 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
             setUsername(user.Username);
         }
     }, [user]);
+
+    //ensure birthday is in correct order
+    useEffect(() => {
+        if (user.Birthday) {
+            setBirthday(new Date(user.Birthday).toISOString().split("T")[0]);
+        }
+    }, [birthday]);
 
     const handleLogout = () =>{
         onLogout();
@@ -73,7 +82,7 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
             return response.json();
         })
         .then(() => {
-            setFavMovies(favMovies.filter(m => String(m.id) !== String(movieId)));
+            setFavoriteMovies(favMovies.filter(m => String(m.id) !== String(movieId)));
         })
         .catch(error => {
             setError(error.message);
@@ -122,7 +131,7 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
         //should only function if password field has content
         if(password) newFields.Password = password; 
         if(email !== user.Email) newFields.Email = email;
-        if(birthday !== formatDate(user.Birthday)) {
+        if(birthday !== user.Birthday) {
             newFields.Birthday = birthday;
         }
 
@@ -174,20 +183,11 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
                             value = {username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
-                            minlength = "4"
-                            readOnly/> 
+                            minLength = "4"
+                           /> 
                          </Form.Group>
 
-                        <Form.Group controlId="password-form" className="mb-3">
-                            <Form.Label>New Password:</Form.Label>
-                            <Form.Control
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </Form.Group>
-
-                        <Form.Group controlId="email-form" className="mb-3">
+                        <Form.Group controlId="email-form">
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
                                 type="email"
@@ -197,20 +197,19 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
                             />
                         </Form.Group>
 
-                        <Form.Group controlId="formBirthday" className="mb-3">
+                        <Form.Group controlId="birthday-form">
                             <Form.Label>Birthday:</Form.Label>
                             <Form.Control
                                 type="date"
                                 value={birthday}
                                 onChange={(e) => setBirthday(e.target.value)}
-                                className="bg-secondary text-white"
                             />
                         </Form.Group>
 
-                        <Button className = "open" onClick = "handleUpdate">
+                        <Button className = "open" onClick = {handleUpdate}>
                             Update
                         </Button>
-                        <Button className = "delete-button" onClick = "handleDeleteAccount">
+                        <Button className = "delete-button" onClick = {handleDeleteAccount}>
                             Delete
                         </Button>
                     </Form>
@@ -222,7 +221,8 @@ export const ProfileView = ({ movies, user, token, favMovies, onProfileUpdate, o
             <Row className="justify-content-center">
                 <h5 className ="font-weight-bold-center">Favorite Movies: </h5>
                 {favMovies && favMovies.length > 0 ? (
-                    favMoviesObjects.map((movie) => (
+                    //favoriteMovies is State, favMovies is just an array of IDs
+                    favoriteMovies.map((movie) => (
                         <Col key={movie.id} sm={6} md={5} lg={5}>
                             <Card>
                                 <Card.Img variant="top" src= {movie.image} alt={movie.title} />
