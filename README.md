@@ -41,4 +41,4 @@ SASS
 
 # API
 
-This project builds off my previous project: a REST API. More information can be found at __.
+This project builds off my previous project: a REST API. More information can be found at https://github.com/logicless-bt/movie-api.
